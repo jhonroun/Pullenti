@@ -17,7 +17,7 @@ var inited bool
 
 func GetChar(ch rune) *UnicodeInfo {
 	if !inited {
-		initialize()
+		Initialize()
 	}
 	if int(ch) >= 0x10000 {
 		ch = '?'
@@ -25,7 +25,7 @@ func GetChar(ch rune) *UnicodeInfo {
 	return allChars[int(ch)]
 }
 
-func initialize() {
+func Initialize() {
 	if inited {
 		return
 	}
@@ -176,4 +176,22 @@ func (u *UnicodeInfo) String() string {
 
 func GetUnicodeInfo(ch rune) *UnicodeInfo {
 	return GetChar(ch)
+}
+
+func Contains(slice []string, str string) bool {
+	for _, s := range slice {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}
+
+func InStrArr(s string, arr ...string) bool {
+	for _, item := range arr {
+		if s == item {
+			return true
+		}
+	}
+	return false
 }

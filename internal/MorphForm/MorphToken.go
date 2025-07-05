@@ -13,8 +13,8 @@ type MorphToken struct {
 	WordForms []*MorphWordForm // Варианты словоформ
 	CharInfo  CharsInfo        // Информация о символах
 	Tag       interface{}      // Произвольный тег
-	mLanguage MorphLang        // Внутренний язык (устанавливается вручную)
-	mLemma    string           // Кэшированная лемма
+	Language  MorphLang        // Внутренний язык (устанавливается вручную)
+	Lemma     string           // Кэшированная лемма
 }
 
 // Length возвращает длину нормализованного слова.
@@ -35,8 +35,8 @@ func (m *MorphToken) GetSourceText(text string) string {
 
 // GetLemma возвращает лемму (нормальную форму) термина.
 func (m *MorphToken) GetLemma() string {
-	if m.mLemma != "" {
-		return m.mLemma
+	if m.Lemma != "" {
+		return m.Lemma
 	}
 
 	var res string
@@ -357,8 +357,8 @@ func isCapitalForm(wf *MorphWordForm) bool {
 
 // GetLanguage возвращает язык токена. Если явно не задан, берётся из первой словоформы.
 func (m *MorphToken) GetLanguage() MorphLang {
-	if !m.mLanguage.IsUndefined() {
-		return m.mLanguage
+	if !m.Language.IsUndefined() {
+		return m.Language
 	}
 	if len(m.WordForms) > 0 {
 		return m.WordForms[0].mLang

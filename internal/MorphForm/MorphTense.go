@@ -28,6 +28,11 @@ func (t MorphTense) IsDefined() bool {
 	return t != MorphTenseUndefined
 }
 
+// IsUndefined возвращает true, если установлено какое-либо время.
+func (t MorphTense) IsUndefined() bool {
+	return t == MorphTenseUndefined
+}
+
 // String возвращает строковое представление времени (например, "прошедшее|настоящее").
 func (t MorphTense) String() string {
 	var res []string

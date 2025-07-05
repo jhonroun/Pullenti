@@ -134,3 +134,18 @@ func (ml MorphLang) Without(others ...MorphLang) MorphLang {
 	}
 	return MorphLang{Value: res}
 }
+
+// NewMorphLang создает новый экземпляр MorphLang с необязательным значением.
+func NewMorphLang(value ...int) MorphLang {
+	if len(value) > 0 {
+		return MorphLang{Value: int16(value[0])}
+	}
+	return MorphLang{Value: 0}
+}
+
+// Clone возвращает копию текущего значения MorphLang.
+// Используется для безопасного создания независимого экземпляра языка,
+// особенно перед изменением его флагов.
+func (m MorphLang) Clone() MorphLang {
+	return MorphLang{Value: m.Value}
+}

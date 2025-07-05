@@ -29,6 +29,11 @@ func (p MorphPerson) IsDefined() bool {
 	return p != MorphPersonUndefined
 }
 
+// IsUndefined возвращает true, если лицо определено (не Undefined).
+func (p MorphPerson) IsUndefined() bool {
+	return p == MorphPersonUndefined
+}
+
 // String возвращает строковое представление лица (например, "1лицо|3лицо").
 func (p MorphPerson) String() string {
 	var res []string

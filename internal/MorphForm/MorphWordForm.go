@@ -137,3 +137,69 @@ func (m *MorphWordForm) ContainsAttr(attr string, class *MorphClass) bool {
 	}
 	return false
 }
+
+// NewMorphWordFormFromVariant создаёт MorphWordForm на основе MorphRuleVariant и слова.
+// Аналог конструктора MorphWordForm(C#).
+func NewMorphWordFormFromVariant(v *MorphRuleVariant, word string, mi *MorphMiscInfo) *MorphWordForm {
+	if v == nil {
+		return nil
+	}
+
+	wf := &MorphWordForm{}
+	wf.CopyFromVariant(v) // Копируем основные поля из варианта
+	wf.Misc = mi
+
+	// Построение NormalCase
+	if v.NormalTail != "" && word != "" {
+		wordBegin := word
+		if LanguageHelperEndsWith(word, v.Tail) && len(v.Tail) <= len(word) {
+			wordBegin = word[:len(word)-len(v.Tail)]
+		}
+		if v.NormalTail != "" {
+			wf.NormalCase = wordBegin + v.NormalTail
+		} else {
+			wf.NormalCase = wordBegin
+		}
+	}
+
+	// Построение NormalFull
+	if v.FullNormalTail != "" && word != "" {
+		wordBegin := word
+		if LanguageHelperEndsWith(word, v.Tail) && len(v.Tail) <= len(word) {
+			wordBegin = word[:len(word)-len(v.Tail)]
+		}
+		if v.FullNormalTail != "" {
+			wf.NormalFull = wordBegin + v.FullNormalTail
+		} else {
+			wf.NormalFull = wordBegin
+		}
+	}
+
+	return wf
+}
+
+// CopyFromVariant копирует все морфологические данные из MorphRuleVariant в MorphWordForm.
+func (wf *MorphWordForm) CopyFromVariant(v *MorphRuleVariant) {
+	if v == nil {
+		return
+	}
+	wf.Tail = v.Tail
+	wf.NormalTail = v.NormalTail
+	wf.FullNormalTail = v.FullNormalTail
+	wf.Class = v.GetClass() //v.Class
+	wf.Gender = v.Gender
+	wf.Number = v.Number
+	wf.Case = v.GetCase() //v.Case
+	wf.Misc = nil         // будет установлен позже
+	wf.Id = v.MiscInfoId
+	wf.RuleId = v.RuleId
+	wf.UndefCoef = 0 // используется позже при сортировке
+}
+
+// LanguageHelperEndsWith проверяет, заканчивается ли строка word на suffix (без учёта регистра).
+func LanguageHelperEndsWith(word, suffix string) bool {
+	if len(suffix) > len(word) {
+		return false
+	}
+	return word[len(word)-len(suffix):] == suffix
+}

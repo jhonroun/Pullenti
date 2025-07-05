@@ -251,3 +251,12 @@ func (m *MorphMiscInfo) Deserialize(stream *morphinternal.ByteArrayWrapper, pos 
 		}
 	}
 }
+
+func (m *MorphMiscInfo) Contains(attr string) bool {
+	for _, a := range m.Attrs {
+		if a == attr {
+			return true
+		}
+	}
+	return false
+}

@@ -391,13 +391,12 @@ func EndsWith(str, substr string) bool {
 	return strings.HasSuffix(strings.ToLower(str), strings.ToLower(substr))
 }
 
-// EndsWithEx проверяет, заканчивается ли строка на одну из 2–4 подстрок.
-func EndsWithEx(str, substr1, substr2, substr3, substr4 string) bool {
+// EndsWithEx проверяет, заканчивается ли строка str на любую из переданных подстрок.
+func EndsWithEx(str string, substrs ...string) bool {
 	if str == "" {
 		return false
 	}
-	subs := []string{substr1, substr2, substr3, substr4}
-	for _, s := range subs {
+	for _, s := range substrs {
 		if s == "" {
 			continue
 		}
