@@ -173,3 +173,7 @@ func (u *UnicodeInfo) String() string {
 	}
 	return sb.String()
 }
+
+func GetUnicodeInfo(ch rune) *UnicodeInfo {
+	return GetChar(ch)
+}

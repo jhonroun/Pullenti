@@ -3,13 +3,14 @@ package morph
 import (
 	"fmt"
 
+	"github.com/jhonroun/pullenti/internal/MorphForm"
 	"github.com/jhonroun/pullenti/internal/morphinternal"
 )
 
 type MorphTreeNode struct {
 	Nodes           map[int16]*MorphTreeNode
 	RuleIds         []int
-	ReverceVariants []*morphinternal.MorphRuleVariantRef
+	ReverceVariants []*MorphForm.MorphRuleVariantRef
 	LazyPos         int
 }
 
@@ -45,12 +46,12 @@ func (m *MorphTreeNode) deserializeBase(str *morphinternal.ByteArrayWrapper, pos
 
 	cou = str.DeserializeShort(pos)
 	if cou > 0 {
-		m.ReverceVariants = make([]*morphinternal.MorphRuleVariantRef, 0, cou)
+		m.ReverceVariants = make([]*MorphForm.MorphRuleVariantRef, 0, cou)
 		for i := 0; i < int(cou); i++ {
 			rid := str.DeserializeShort(pos)
 			id := str.DeserializeShort(pos)
 			co := str.DeserializeShort(pos)
-			m.ReverceVariants = append(m.ReverceVariants, &morphinternal.MorphRuleVariantRef{
+			m.ReverceVariants = append(m.ReverceVariants, &MorphForm.MorphRuleVariantRef{
 				RuleId:    int(rid),
 				VariantId: int16(id),
 				Coef:      int16(co),
