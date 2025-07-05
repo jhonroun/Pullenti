@@ -1,13 +1,15 @@
-package morphinternal
+package morph
 
 import (
 	"fmt"
+
+	"github.com/jhonroun/pullenti/internal/morphinternal"
 )
 
 type MorphTreeNode struct {
 	Nodes           map[int16]*MorphTreeNode
 	RuleIds         []int
-	ReverceVariants []*MorphRuleVariantRef
+	ReverceVariants []*morphinternal.MorphRuleVariantRef
 	LazyPos         int
 }
 
@@ -29,7 +31,7 @@ func (m *MorphTreeNode) String() string {
 	return fmt.Sprintf("? (%d, %d)", m.CalcTotalNodes(), count)
 }
 
-func (m *MorphTreeNode) deserializeBase(str *ByteArrayWrapper, pos *int) {
+func (m *MorphTreeNode) deserializeBase(str *morphinternal.ByteArrayWrapper, pos *int) {
 	cou := str.DeserializeShort(pos)
 	if cou > 0 {
 		m.RuleIds = make([]int, 0, cou)
@@ -43,12 +45,12 @@ func (m *MorphTreeNode) deserializeBase(str *ByteArrayWrapper, pos *int) {
 
 	cou = str.DeserializeShort(pos)
 	if cou > 0 {
-		m.ReverceVariants = make([]*MorphRuleVariantRef, 0, cou)
+		m.ReverceVariants = make([]*morphinternal.MorphRuleVariantRef, 0, cou)
 		for i := 0; i < int(cou); i++ {
 			rid := str.DeserializeShort(pos)
 			id := str.DeserializeShort(pos)
 			co := str.DeserializeShort(pos)
-			m.ReverceVariants = append(m.ReverceVariants, &MorphRuleVariantRef{
+			m.ReverceVariants = append(m.ReverceVariants, &morphinternal.MorphRuleVariantRef{
 				RuleId:    int(rid),
 				VariantId: int16(id),
 				Coef:      int16(co),
@@ -57,7 +59,7 @@ func (m *MorphTreeNode) deserializeBase(str *ByteArrayWrapper, pos *int) {
 	}
 }
 
-func (m *MorphTreeNode) Deserialize(str *ByteArrayWrapper, pos *int) int {
+func (m *MorphTreeNode) Deserialize(str *morphinternal.ByteArrayWrapper, pos *int) int {
 	res := 0
 	m.deserializeBase(str, pos)
 	cou := str.DeserializeShort(pos)
@@ -75,7 +77,7 @@ func (m *MorphTreeNode) Deserialize(str *ByteArrayWrapper, pos *int) int {
 	return res
 }
 
-func (m *MorphTreeNode) DeserializeLazy(str *ByteArrayWrapper, me *MorphEngine, pos *int) {
+func (m *MorphTreeNode) DeserializeLazy(str *morphinternal.ByteArrayWrapper, me *MorphEngine, pos *int) {
 	m.deserializeBase(str, pos)
 	cou := str.DeserializeShort(pos)
 	if cou > 0 {

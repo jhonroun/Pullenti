@@ -1,15 +1,13 @@
-package morphinternal
+package morph
 
 import (
 	"fmt"
 	"strings"
-
-	"main/internal/morph"
 )
 
 // MorphRuleVariant соответствует MorphRuleVariant из C#
 type MorphRuleVariant struct {
-	morph.MorphBaseInfo
+	MorphBaseInfo
 
 	Tail           string
 	MiscInfoId     int16

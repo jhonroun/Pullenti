@@ -1,7 +1,9 @@
-package morphinternal
+package morph
 
 import (
 	"strings"
+
+	"github.com/jhonroun/pullenti/internal/morphinternal"
 )
 
 // MorphRule соответствует MorphRule из Pullenti
@@ -63,7 +65,7 @@ func (m *MorphRule) String() string {
 }
 
 // Deserialize десериализует MorphRule из ByteArrayWrapper
-func (m *MorphRule) Deserialize(str *ByteArrayWrapper, pos *int) {
+func (m *MorphRule) Deserialize(str *morphinternal.ByteArrayWrapper, pos *int) {
 	m.Id = int(str.DeserializeShort(pos))
 	var idCounter int16 = 1
 	for !str.IsEOF(*pos) {
